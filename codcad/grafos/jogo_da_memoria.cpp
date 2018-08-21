@@ -2,7 +2,7 @@
 * @Author: Pedro Torres
 * @Date:   2018-08-21 08:50:06
 * @Last Modified by:   Pedro Torres
-* @Last Modified time: 2018-08-21 14:55:28
+* @Last Modified time: 2018-08-21 16:23:07
 */
 
 #include <bits/stdc++.h>
@@ -20,7 +20,8 @@ int nivel[MAXN];
 int pai[MAXN];
 int ancestral[MAXN][MAXL];
 
-// ancestral[i][j] = 2^j-esimo ancestral de i
+int c[MAXN];
+int par[MAXN];
 
 void dfs(int u){
 	list<int>::iterator it;
@@ -59,12 +60,25 @@ int lca(int u, int v){
 }
 
 int main(){
-	int n, m;
+	int n;
 	int u, v;
+	int carta;
 
-	scanf("%d %d" ,&n, &m);
+	scanf("%d" ,&n);
 
-	for(int i = 0; i < m; i++){
+	for(int i = 1; i <= n; i++){
+		int x;
+		scanf("%d" ,&x);
+		
+		if(c[x]){
+			par[i] = c[x];
+			par[c[x]] = i;
+		}
+
+		c[x] = i;
+	}
+
+	for(int i = 0; i < n - 1; i++){
 		scanf("%d %d" ,&u ,&v);
 		
 		g[u].pb(v);
@@ -94,7 +108,13 @@ int main(){
 		}
 	}
 
-	// distancia de um nivel u:v
-	// int dist = nivel[u] + nivel[v] - 2 * nivel[lca(u, v)];
+	long long resultado = 0;
+
+	for(int i = 1;i <= n;i++){
+		resultado += (long long) (nivel[i] + nivel[par[i]] - 2 * nivel[lca(i, par[i])]);
+	}
+
+	printf("%lld\n" ,resultado / 2);
+
 	return 0;
 }
