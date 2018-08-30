@@ -13,6 +13,6 @@ O repositório está organizado com uma pasta para cada plataforma de juiz onlin
 
 **Mebros:**
 
-- Enoque Alves: email@email.com
+- Enoque Alves: enoquealvesufc@gmail.com
 - Pedro Olímpio: email@email.com
 - Pedro Torres (Camus de Aquário): cs.pedrotorres@gmail.com
