@@ -10,9 +10,10 @@
 #define MAXN 10010
 #define go(i,n) for (int i = 1; i <= (int) n; i++)
 #define goK(i,n,k) for (int i = 1; i <= (int) n-k; i++)
+#define lld long long int
 using namespace std;
 
-int v[602][602];
+lld v[602][602];
 int memo[602][602];
 int memo2[602][602];
 int n, m;
@@ -28,23 +29,14 @@ void calcula (int i, int j){
 	}
 }
 
-
-
-int f (int i, int j, int k){
-	if (j + k > m) return 0;
-	//printf ("i = %d  j = %d k = %d    ", i, j, k);
-	int ans = 0;
-	if (memo[i][j] >= k) ans += k;
-	else return 0;
-	i++;
-	for (; i <= n; i++){
-		if (v[i-1][j+k-1] >= v[i][j]) break; 
-		if (memo[i][j] >= k) ans += k;
-		else break;
+void calcula2 (int i){
+	memo[i][m] = 1;
+	for (int j = m-1; j >= 1; j--){
+		memo[i][j] = 1;
+		if (v[i][j] < v[i][j+1]) memo[i][j] += memo[i][j+1];
 	}
-	//printf ("ans = %d\n",  ans);
-	return ans;
 }
+
 
 
 void mostra (){
@@ -59,25 +51,30 @@ void mostra (){
 int main (){
 	while (scanf ("%d %d", &n, &m) == 2){
 		if (n == 0) break;
-		memset (memo, 0, sizeof(memo));
+		//memset (memo, 0, sizeof(memo));
 		go(i,n){
 			go(j,m){
-				scanf ("%d", &v[i][j]);
+				scanf ("%lld", &v[i][j]);
 			}
 		}
+		/*
 		go(i,n){
 			go(j,m){
 				calcula(i,j);
 			}
+		}*/
+		go(i,n){
+			calcula2(i);
 		}
 		int ans = -INF;
-		go (k,n){
+		//mostra();
+		go (k,m){
 			go(i,n){
-				goK(j,m,k){
-					//ans = max (ans, f(i,j,k));
-					if (memo[i][j] >= k) memo2[i][j]++;
-					if (v[i-1][j+k-1] < v[i][j]) memo2[i][j] += memo[i-1][j];
-					ans = max(ans, memo[i][j]);
+				go(j,m-k+1){
+					memo2[i][j] = 0;
+					if (memo[i][j] >= k) memo2[i][j] = k;
+					if (v[i-1][j+k-1] < v[i][j] && memo[i-1][j] >= k && j + k-1 <= m) memo2[i][j] += memo2[i-1][j];
+					ans = max(ans, memo2[i][j]);
 				}
 			}
 		}
