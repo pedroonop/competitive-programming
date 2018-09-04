@@ -21,6 +21,10 @@ dd operator-(const dd &a, const dd &b){
 	return dd(a.x - b.x, a.y - b.y);
 }
 
+double dot(dd a, dd b){
+	return a.x * b.x + a.y * b.y;
+}
+
 double cross(dd a, dd b){
 	return a.x * b.y - a.y * b.x;
 }
@@ -58,7 +62,9 @@ int main(){
 		double minimo = l - vet[0].ss.x;
 
 		for (int i = 1; i < n; i++){
-			minimo = min(minimo, dist(vet[i - 1].ss, vet[i]));
+			if (dot(vet[i].ff - vet[i].ss, vet[i - 1].ss - vet[i].ss) < 0) minimo = min(minimo, dist(vet[i - 1].ss, vet[i].ss));
+			else minimo = min(minimo, dist(vet[i - 1].ss, vet[i]));
+
 			if (i % 2 == 0) minimo = min(minimo, l - vet[i].ss.x);
 			else minimo = min(minimo, vet[i].ss.x);
 		}
