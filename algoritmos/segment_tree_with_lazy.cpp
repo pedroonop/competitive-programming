@@ -17,6 +17,8 @@ int lazy[4*maxn];
 Node vazio;
 
 
+
+
 void build(int node, int left ,int right){
 	if(left == right){
 		tree[node].v[0]++;
@@ -42,7 +44,7 @@ void update_range( int node, int left, int right, int lq, int rq, int k){
   		int v[3];
   		memset (v,0,sizeof(v));
   		go(i,3){
-  			v[i] = tree[node].v[(i+lazy[node])%3];
+  			v[(i+lazy[node])%3] = tree[node].v[i];
   		}
   		go(i,3){
   			tree[node].v[i] = v[i];
@@ -66,7 +68,7 @@ void update_range( int node, int left, int right, int lq, int rq, int k){
   		int v[3];
   		memset (v,0,sizeof(v));
   		go(i,3){
-  			v[i] = tree[node].v[(i+k)%3];
+  			v[(i+k)%3] = tree[node].v[i];
   		}
   		go(i,3){
   			tree[node].v[i] = v[i];
@@ -102,7 +104,7 @@ Node query(int node,int left ,int right ,int lq , int rq){
 		int v[3];
 		memset (v,0,sizeof(v));
   		go(i,3){
-  			v[i] = tree[node].v[(i+lazy[node])%3];
+  			v[(i+lazy[node])%3] = tree[node].v[i];
   		}
   		go(i,3){
   			tree[node].v[i] = v[i];
@@ -164,14 +166,14 @@ int main(){
 					}
 				}
 				//printf("maior %d\n", maior);
-				if (maior > (b-a)/2)
+				//if (maior >= (b-a)/2)
 					update_range(0, 0, n-1, a, b, 1);
 			}else{
 				//scanf("%d %d", &a, &b);
 				Node aux = query(0,0,n-1, a,b);
 				printf("%d", aux.v[0]);
-				printf(" %d", aux.v[2]);
 				printf(" %d", aux.v[1]);
+				printf(" %d", aux.v[2]);
 				printf("\n");
 				//printf("%d\n", query(0, 0, n-1, a, b) );
 			}		

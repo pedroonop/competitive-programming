@@ -15,6 +15,16 @@ const int maxn  = 100000;
 Node tree[4*maxn];
 int lazy[4*maxn];
 Node vazio;
+int v[3];
+
+
+int add (int a, int b){
+	a += b;
+	if (a >= 3) a -= 3;
+	return a;
+	
+}
+
 
 
 void build(int node, int left ,int right){
@@ -26,10 +36,10 @@ void build(int node, int left ,int right){
 	
 	int mid = mid(left,right);
 	int esq = 2*node+1;
-	int dir = 2*node+2;
+	//int dir = 2*node+2;
 	build(esq,left,mid);
-	build(dir,mid+1,right);
-	tree[node].v[0] = tree[esq].v[0] + tree[dir].v[0];
+	build(esq+1,mid+1,right);
+	tree[node].v[0] = tree[esq].v[0] + tree[esq+1].v[0];
 	//lazy[node] = 0;
 
 }
@@ -37,21 +47,20 @@ void build(int node, int left ,int right){
 
 
 void update_range( int node, int left, int right, int lq, int rq, int k){
-  
+  int esq = 2*node+1;
+  //int dir = 2*node+2;
   if( lazy[node] ){
-  		int v[3];
-  		memset (v,0,sizeof(v));
   		go(i,3){
-  			v[i] = tree[node].v[(i+lazy[node])%3];
+  			//v[(i+lazy[node])%3] = tree[node].v[i];
+  			v[add(i,lazy[node])] = tree[node].v[i];
   		}
   		go(i,3){
   			tree[node].v[i] = v[i];
   		}
-		//tree[node] = (right-left+1)*lazy[node];
 		
 		if( left != right ){ // tem filhos
-			lazy[2*node+1] += lazy[node];
-			lazy[2*node+2] += lazy[node];
+			lazy[esq] = add(lazy[node],lazy[esq]);
+			lazy[esq+1] = add(lazy[node],lazy[esq+1]);
 		}
 		
 		lazy[node] = 0;
@@ -63,29 +72,28 @@ void update_range( int node, int left, int right, int lq, int rq, int k){
   if(left >= lq && right <= rq){ // se o intervalo [lq,rq] cobre totalmente [left, right]
 		
 		//tree[node] = (right-left+1)*k;
-  		int v[3];
-  		memset (v,0,sizeof(v));
   		go(i,3){
-  			v[i] = tree[node].v[(i+k)%3];
+  			//v[(i+k)%3] = tree[node].v[i];
+  			v[add(i,k)] = tree[node].v[i];
   		}
   		go(i,3){
   			tree[node].v[i] = v[i];
   		}
 		//printf("[%d - %d] = %d\n", left+1, right+1, tree[node]);
 		if( left != right ){ // tem filhos
-			lazy[2*node+1] += k;
-			lazy[2*node+2] += k;
+			lazy[esq] = add(k,lazy[esq]);
+			lazy[esq+1] = add(k,lazy[esq+1]);
 		}
 		
 	}else{
 		
 		int mid = mid(left,right);
-		int esq = 2*node+1;
-		int dir = 2*node+2;
+		//int esq = 2*node+1;
+		//int dir = 2*node+2;
 		update_range(esq,left,mid,lq,rq, k); 
-		update_range(dir,mid+1,right,lq,rq, k);
+		update_range(esq+1,mid+1,right,lq,rq, k);
 		go(i,3){
-			tree[node].v[i] = tree[esq].v[i] + tree[dir].v[i];
+			tree[node].v[i] = tree[esq].v[i] + tree[esq+1].v[i];
 		}
     	//tree[node] = tree[2*node+1] + tree[2*node+2];
 		//printf("[%d - %d] = %d\n", left+1, right+1, tree[node]);
@@ -96,20 +104,19 @@ void update_range( int node, int left, int right, int lq, int rq, int k){
 
 
 Node query(int node,int left ,int right ,int lq , int rq){
-	
+	int esq = 2*node+1;
+	//int dir = 2*node+2;
 	if( lazy[node] ){
 		//tree[node] = (right-left+1)*lazy[node];
-		int v[3];
-		memset (v,0,sizeof(v));
-  		go(i,3){
-  			v[i] = tree[node].v[(i+lazy[node])%3];
+		go(i,3){
+  			v[add(i,lazy[node])] = tree[node].v[i];
   		}
   		go(i,3){
   			tree[node].v[i] = v[i];
   		}
 		if( left != right ){ // tem filhos
-			lazy[2*node+1] += lazy[node];
-			lazy[2*node+2] += lazy[node];
+			lazy[esq] = add(lazy[esq],lazy[node]);
+			lazy[esq+1] = add(lazy[esq+1],lazy[node]);
 		}
 		
 		lazy[node] = 0;
@@ -122,8 +129,8 @@ Node query(int node,int left ,int right ,int lq , int rq){
 		return tree[node];
 	
 	int mid = mid(left,right);
-	Node p1 = query(2*node+1,left,mid,lq,rq); 
-	Node p2 = query(2*node+2,mid+1,right,lq,rq);
+	Node p1 = query(esq,left,mid,lq,rq); 
+	Node p2 = query(esq+1,mid+1,right,lq,rq);
 	Node p3;
 
 	go(i,3){
@@ -139,7 +146,7 @@ int main(){
 	memset (vazio.v, 0, sizeof(vazio.v));
 	int n, q;
 	char op;
-	int a, b, k;
+	int a, b;
 	
 	//cin >> n >> q;
 	while (scanf ("%d %d", &n, &q) == 2){
@@ -154,24 +161,13 @@ int main(){
 			b--;	
 			
 			if( op == 'M'){
-				Node aux = query(0,0,n-1, a, b);
-				int maior = -1;
-				int indice = -1;
-				go(i,3){
-					if (maior < aux.v[i]){
-						maior = aux.v[i];
-						indice = i;
-					}
-				}
-				//printf("maior %d\n", maior);
-				if (maior > (b-a)/2)
-					update_range(0, 0, n-1, a, b, 1);
+				update_range(0, 0, n-1, a, b, 1);
 			}else{
 				//scanf("%d %d", &a, &b);
 				Node aux = query(0,0,n-1, a,b);
 				printf("%d", aux.v[0]);
-				printf(" %d", aux.v[2]);
 				printf(" %d", aux.v[1]);
+				printf(" %d", aux.v[2]);
 				printf("\n");
 				//printf("%d\n", query(0, 0, n-1, a, b) );
 			}		
