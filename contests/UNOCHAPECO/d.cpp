@@ -28,6 +28,7 @@ int main (){
 			int aux;
 			scanf ("%d", &aux);
 			v.pb(aux);
+			
 		}
 		v.pb(-INF);
 		int maior = -1;

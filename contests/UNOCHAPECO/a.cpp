@@ -16,7 +16,7 @@ using namespace std;
 #define ss second
 #define dd pair<double, double>
 #define ms(v, x) memset(v, x, sizeof(v))
-#define MAXN 1000000
+#define MAXN 10000000
 #define m 1000000007
 
 bool comp(int a, int b){
@@ -28,21 +28,22 @@ int main(){
 	int n, k;
 
 	while (scanf("%d %d", &n, &k) == 2){
-		int vet[MAXN + 1];
+		lld vet[MAXN + 1];
 
 		go (i, n){
-			scanf("%d", vet + i);
+			scanf("%lld", vet + i);
 		}
 
 		sort(vet, vet + n, comp);
 
-		int cont = 0;
+		lld cont = 0;
 
 		go (i, k){
 			cont = (cont + vet[i]) % m;
+			//if (vet[i] == vet[k-1]) break;		
 		}
 
-		printf("%d\n", cont);		
+		printf("%lld\n", cont%m);		
 	}
 
 	return 0;
