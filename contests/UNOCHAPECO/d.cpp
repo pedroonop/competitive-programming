@@ -18,24 +18,26 @@ using namespace std;
 #define linha pair<dd, dd>
 #define mod 1000000007
 vector<int> v;
-
-int main () {
-	int n, k;
-	while (scanf ("%d %d", &n, &k) == 2){
+int dp[510000];
+int main (){
+	int n;
+	while (scanf ("%d", &n) == 1){
 		v.clear();
+		memset(dp,0,sizeof dp);
 		go(i,n){
 			int aux;
 			scanf ("%d", &aux);
-			v.push_back(aux);
+			v.pb(aux);
 		}
-		
-		sort(v.rbegin(), v.rend());
-		lld ans = 0;
-		for (int i = 0; i < k; i++){
-			ans += v[i];
-			ans %= mod;
+		v.pb(-INF);
+		int maior = -1;
+		for(int i = n-1; i >= 0; i--){
+			dp[i] = 1;
+			if (v[i] < v[i+1]) dp[i] += dp[i+1];
+			//else dp[i] = max(dp[i], dp[i+1]);
+			maior = max(maior, dp[i]);
 		}
-		printf ("%d\n", ans);
+		printf ("%d\n", maior);
 	}
 	return 0;
 }
