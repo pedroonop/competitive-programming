@@ -45,6 +45,5 @@ int main(){
 		printf("%d\n", cont);		
 	}
 
-
 	return 0;
 }
