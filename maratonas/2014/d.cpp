@@ -107,6 +107,7 @@ int main(){
 				valor[indices_valendo[i]] = dfs_pontes(i,i);
 				flag = false;
 				indice++;
+				
 				break;
 			}
 		}
