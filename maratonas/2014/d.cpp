@@ -80,6 +80,11 @@ int main(){
 
 	scanf("%d %d" ,&n ,&m);
 
+	memset(color, 0, sizeof(color));
+	memset(level, 0, sizeof(level));
+	memset(pi, 0, sizeof(pi));
+	memset(low, 0, sizeof(low));
+
 	for (int i = 0; i < m; i++){
 		scanf("%d %d %d" ,&u ,&v ,&w);
 		g[u].pb(ii(v, w));
@@ -88,10 +93,11 @@ int main(){
 	dfs(1);
 	ms(color, 0);
 	indice = n;
+
 	for(auto x : bridges){
 		printf("%d %d\n", x.ff, x.ss);
 	}
-
+	printf("%lu\n", bridges.size());
 	for (int i = 1; i <= n; i++){
 		if (indices_valendo[i]) continue;
 		for (auto v : g[i]){
