@@ -8,6 +8,9 @@ using namespace std;
 
 struct Matriz {
 	int matriz[100][100];
+	int *operator[](int i){
+		return matriz[i];
+	}
 };
 
 

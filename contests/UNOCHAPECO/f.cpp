@@ -37,9 +37,12 @@ int main(){
 	vector<lld> acumulado;
 	acumulado.pb(0);
 
+	vector<lld> primes;
+
 	int aux;
 	for (int i = 2; i <= MAXN; i++){
 		if (isComposite[i]) continue;
+		primes.push_back(i);
 		aux = i;
 		if (aux > M) aux -= M;
 		acumulado.pb(add(acumulado.back(), aux));
