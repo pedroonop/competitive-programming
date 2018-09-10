@@ -5,8 +5,6 @@ using namespace std;
 #define llu long long unsigned
 #define lld long long int
 #define ii pair<int, int>
-#define x first
-#define y second
 #define pb(x) push_back(x)
 #define go(i,n) for (int i = 0; i < (int)n; i++)
 #define vi vector <int>
@@ -74,43 +72,82 @@ int dfs_pontes(int u, int pai){
 	return cost;
 }
 
+priority_queue<ii, vector<ii>, greater<ii> >pq;
+
 int main(){
 	g.resize(MAXN);
 	int n, m, u, v, w;
 
-	scanf("%d %d" ,&n ,&m);
+	while (scanf("%d %d" ,&n ,&m) == 2){
 
-	for (int i = 0; i < m; i++){
-		scanf("%d %d %d" ,&u ,&v ,&w);
-		g[u].pb(ii(v, w));
-		g[v].pb(ii(u, w));	
-	}
-	dfs(1);
-	ms(color, 0);
-	indice = n;
-	for(auto x : bridges){
-		printf("%d %d\n", x.ff, x.ss);
-	}
+		memset(color, 0, sizeof(color));
+		memset(level, 0, sizeof(level));
+		memset(pi, 0, sizeof(pi));
+		memset(low, 0, sizeof(low));
+		go(i,n) g[i+1].clear();
+		g.clear();
+		indices_valendo.clear();
+		valor.clear();
+		for (int i = 0; i < m; i++){
+			scanf("%d %d %d" ,&u ,&v ,&w);
+			g[u].pb(ii(v, w));
+			g[v].pb(ii(u, w));	
+		}
+		dfs(1);
+		ms(color, 0);
+		indice = n+1;
 
-	for (int i = 1; i <= n; i++){
-		if (indices_valendo[i]) continue;
-		for (auto v : g[i]){
-			if (bridges.find(ii(i, v.ff)) == bridges.end()){
-				ms(color, 0);
-				cout << dfs_pontes(i, i) << endl;
-				valor[indices_valendo[i]] = dfs_pontes(i,i);
-				flag = false;
-				indice++;
-				break;
+		for (int i = 1; i <= n; i++){
+			if (indices_valendo[i]) continue;
+			for (auto v : g[i]){
+				if (bridges.find(ii(i, v.ff)) == bridges.end()){
+					ms(color, 0);
+					indices_valendo[i] = indice;
+					valor[indices_valendo[i]] = dfs_pontes(i,i);
+					flag = false;
+					indice++;
+					break;
+				}
 			}
 		}
-	}
-	for (int i = 1; i <= n; i++){
-		if(indices_valendo.find(i) == indices_valendo.end()){
-			indices_valendo[i] = i;
-			valor[i] = 0;
+		for (int i = 1; i <= n; i++){
+			if(indices_valendo.find(i) == indices_valendo.end()){
+				indices_valendo[i] = i;
+				valor[i] = 0;
+			}
+		}
+		int q;
+		scanf ("%d", &q);
+		while (q--){
+			int s, t;
+			scanf ("%d %d", &s, &t);
+			vi dist;
+			dist.assign(n+1,INF);
+			dist[s] = 0;
+			pq.push(ii(0,s));
+			while (!pq.empty()){
+				ii topo = pq.top();
+				pq.pop();
+				int u = topo.ss;
+				int w = topo.ff;
+				if (w > dist[u]) continue;
+				
+				for (ii x : g[u]){
+					if (dist[u]+x.ss < dist[x.ff]){
+						dist[x.ff] = dist[u]+x.ss;
+						pq.push(ii(dist[x.ff], x.ff));
+					}
+				}
+			}
+			int ans = INF;
+			for (int i = 1; i <= n; i++){
+				if (valor[indices_valendo[i]] >= t){
+					 ans = min((dist[i]*2+valor[indices_valendo[i]]), ans);
+				 }
+			}
+			if (ans == INF) printf("-1\n");
+			else printf ("%d\n", ans);
 		}
 	}
-
 	return 0;
 }
