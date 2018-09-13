@@ -32,11 +32,8 @@ double cross(dd a, dd b){
 bool livre(dd a, dd b, int m, linha muros[]){
 	dd c = a - b;
 	go (i, m){
-		dd d = muros[i].ss - muros[i].ff;
-		if (cross(c, muros[i].ff) * cross(c, muros[i].ss) < 0 && cross(d, a) * cross(d, b) < 0)
-			return false;
+		
 	}
-	return true;
 }
 
 int main(){

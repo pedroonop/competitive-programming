@@ -72,8 +72,8 @@ double area(vector <dd> p){
 }
 
 //Toma 3 números e retorna se eles formam um ângulo convexo ou côncavo.
-double ccw(dd a, dd b, dd c){
-	return cross(b - a, c - b);
+bool ccw(dd a, dd b, dd c){
+	return cross(b - a, c - b) > 0;
 }
 
 // convex hull - modifique como necessario
@@ -87,7 +87,7 @@ void convex_hull(dd p[], dd st[], int n) {
 	}
 	int k = sn;
 	for(int i = n - 2; i >= 0; i--) {
-		while(sn > k && ccw(st[sn - 2], st[sn - 1], p[i]) > 0)
+		while(sn > k && ccw(st[sn - 2], st[sn - 1], p[i]))
 			sn--;
 		st[sn++] = p[i];
 	}
