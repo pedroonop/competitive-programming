@@ -6,7 +6,7 @@ const long long MN = 1000 * 100;
 bool sieve[MN];
 long long primes[MN];
 
-void fillp() {
+void fillp() {//crivo
   memset(sieve, 0, sizeof sieve);
   sieve[1] = sieve[0] = 1;
   int p = 0;
@@ -40,7 +40,7 @@ int main() {
 
   long long n;
   while (cin >> n) {
-    cout << (totient(n) >> 1) << endl;
+    cout << totient(n) << endl;
   }
 
   return 0;
