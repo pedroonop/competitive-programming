@@ -64,7 +64,6 @@ int rangeSum(int l, int r, int BITTree1[], int BITTree2[]){
 }
  
  
-// Driver Program to test above function
 int main(){
 	updateRange(BITTree1,BITTree2,n,val,l,r);
 	rangeSum(l,r,BITTree1,BITTree2);
