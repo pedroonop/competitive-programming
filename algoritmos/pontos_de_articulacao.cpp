@@ -95,5 +95,5 @@ int main(){
 		scanf("%d %d" ,&n ,&m);
 		teste++;
 	}
-	
+	return 0;
 }

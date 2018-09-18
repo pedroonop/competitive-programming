@@ -76,12 +76,6 @@ ddd oposto(ddd a, ddd b, ddd c){
 bool pxp(ddd point, plano p){
 	ddd a = p.ff, b = p.ss, c = p.tt;
 	ddd a_  = oposto(a, b, c), b_ = oposto(b, a, c), c_ = oposto(c, a, b);
-	if (point == ddd(8, dd(-3, -10)) && p.ff == ddd(10, dd(-4, 8)) && p.tt == ddd(-8, dd(2, 1))){
-		printf("%lf %lf %lf\n", b_.x, b_.y, b_.z);
-		printf("%lf %lf %lf\n", (b_ - b).x, (b_ - b).y, (b_ - b).z);
-		printf("%lf %lf %lf\n", (b_ - point).x, (b_ - point).y, (b_ - point).z);
-		printf("aaa: %lf\n", dot(b_ - b, b_ - point));
-	}
 	return dot(a_ - a, a_ - point) >= 0 && dot(b_ - b, b_ - point) >= 0 && dot(c_ - c, c_ - point) >= 0;
 }
 

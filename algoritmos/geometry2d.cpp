@@ -46,10 +46,10 @@ double dot(dd a, dd b){
 }
 
 //O produto vetorial nos dá a área do paralelogramo com lados a e b (com sinal)
-//e nos permite saber se o ângulo entre a e b é menor que 180 (se a área for menor que 0),]
+//e nos permite saber se o ângulo entre a e b é menor que 180 (se a área for menor que 0),
 //igual a 180 (se a área for igual a 0, no caso os vetores são paralelos), ou maior que 180
 //(se a área for maior que 180).
-//dot(a, b) = sin(ab) * module(a) * module(b)
+//cross(a, b) = sin(ab) * module(a) * module(b)
 double cross(dd a, dd b){
 	return a.x * b.y - a.y * b.x;
 }
@@ -81,7 +81,7 @@ void convex_hull(dd p[], dd st[], int n) {
 	sort(p, p + n);
 	int sn = 0;
 	for(int i = 0; i < n; i++) {
-		while(sn >= 2 && ccw(st[sn - 2], st[sn - 1], p[i]) > 0)
+		while(sn >= 2 && ccw(st[sn - 2], st[sn - 1], p[i]))
 			sn--;
 		st[sn++] = p[i];
 	}
@@ -93,6 +93,21 @@ void convex_hull(dd p[], dd st[], int n) {
 	}
 	sn--;
 	// st[0..sn-1] agora tem o convex hull dos pontos p
+}
+
+bool cruza(dd a, dd b, dd c, dd d){
+	dd ab = b - a;
+	dd cd = d - c;
+	dd cb = b - c;
+	dd db = b - d;
+	dd ad = d - a;
+	dd bd = d - b;
+	if (max(a.x, b.x) < min(c.x, d.x) || 
+		max(a.y, b.y) < min(c.y, d.y) || 
+		max(c.x, d.x) < min(a.x, b.x) || 
+		max(c.y, d.y) < min(a.y, b.y))
+		return false;
+	return cross(ab, cb) * cross(ab, db) < EPS && cross(cd, ad) * cross(cd, bd) < EPS;
 }
 
 int main(){
