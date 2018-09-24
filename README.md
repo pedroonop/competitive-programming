@@ -1,4 +1,4 @@
-## Repositório da equipe Computeiros do Zodíaco com soluções de problemas de programação competitiva
+﻿## Repositório da equipe Computeiros do Zodíaco com soluções de problemas de programação competitiva
 
 O repositório está organizado com uma pasta para cada plataforma de juiz online já utilizada pelos membros.
 
@@ -10,9 +10,11 @@ O repositório está organizado com uma pasta para cada plataforma de juiz onlin
 - [SPOJ](https://www.spoj.com/)
 - [SPOJ Brasil](https://br.spoj.com/)
 - [URI](https://www.urionlinejudge.com.br/)
+- [project_euler] (https://www.projecteuler.net/)
+- [hackerrank] (https://www.hackerrank.com)
 
 **Mebros:**
 
-- Enoque Alves: enoquealvesufc@gmail.com
+- Enoque Alves (Mu de Áries): enoquealvesufc@gmail.com
 - Pedro Olímpio: email@email.com
 - Pedro Torres (Camus de Aquário): cs.pedrotorres@gmail.com
