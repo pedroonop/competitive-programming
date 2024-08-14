@@ -34,7 +34,7 @@ dd operator/(dd point, double n){
 }
 
 double module(dd point){
-	return sqrt(point.x * point.x + point.y + point.y);
+	return sqrt(point.x * point.x + point.y * point.y);
 }
 
 //Supondo a e b não nulos, temos que o produto escalar deles vai ser
